@@ -31,7 +31,7 @@ Templates allow programmers to write blueprints for functions and classes that o
   - `template <typename T> const T& max(const T& a, const T& b)`: Returns the greatest value. If values are equal, **returns the second argument (`b`)**.
 - **Requirements**:
   - Can be called with any type that supports comparison operators (`<`, `>`).
-  - Tested with built-in types (`int`, `std::string`) and custom classes with operator overloads (`Awesome`).
+  - Tested with built-in types (`int`, `std::string`) as specified in the subject.
 
 ### [Exercise 01: Iter](ex01/)
 - **Header**: `iter.hpp`
@@ -75,15 +75,15 @@ Templates allow programmers to write blueprints for functions and classes that o
 - [x] **Exercise 00**:
   - Files named `Makefile`, `main.cpp`, `whatever.hpp` (lowercase).
   - `swap`, `min`, `max` defined as function templates.
-  - `min` and `max` return the second parameter when values are equal (verified via pointer equality `&min(eq1, eq2) == &eq2`).
-  - Tested with basic types and custom classes with overloaded operators.
+  - `min` and `max` return the second parameter when values are equal.
+  - Mandatory subject test suite executes and produces exact expected output.
 
 - [x] **Exercise 01**:
   - Files named `Makefile`, `main.cpp`, `iter.hpp` (lowercase).
   - `iter` accepts 3 parameters: array pointer, `const` length, callable function.
   - Supports both `const` and non-const arrays.
   - Supports modifying functions and instantiated function templates.
-  - Tested with primitive arrays, const string arrays, and custom classes (`Awesome`).
+  - Tested with non-const integer arrays and const string arrays.
 
 - [x] **Exercise 02**:
   - Files named `Makefile`, `main.cpp`, `Array.hpp`.
@@ -91,9 +91,9 @@ Templates allow programmers to write blueprints for functions and classes that o
   - Allocates with `new[]` and deallocates with `delete[]`.
   - Value-initialization via `new T[n]()`.
   - Subscript operator `operator[]` provided for both non-const and const instances.
-  - Accessing invalid indices (negative numbers, index $\ge$ size) throws `std::exception`.
+  - Accessing invalid indices throws `std::exception`.
   - Deep copy verified: modifications to copy do not affect original.
-  - Passes official 42 subject benchmark (`MAX_VAL = 750` with mirror verification).
+  - Tested with both `int` and `std::string` arrays.
 
 ---
 

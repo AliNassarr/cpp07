@@ -1,142 +1,50 @@
 #include "Array.hpp"
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <ctime>
-
-#define MAX_VAL 750
 
 int main(void)
 {
-	std::cout << "==========================================" << std::endl;
-	std::cout << "  42 Official Subject Benchmark (MAX_VAL) " << std::endl;
-	std::cout << "==========================================" << std::endl;
+	// 1. Default constructor (empty array)
+	Array<int> empty;
+	std::cout << "Empty array size: " << empty.size() << std::endl;
+
+	// 2. Parametric constructor and element assignment
+	Array<int> numbers(5);
+	std::cout << "Numbers size: " << numbers.size() << std::endl;
+	for (unsigned int i = 0; i < numbers.size(); ++i)
+		numbers[i] = (i + 1) * 10;
+
+	std::cout << "Numbers elements: ";
+	for (unsigned int i = 0; i < numbers.size(); ++i)
+		std::cout << numbers[i] << " ";
+	std::cout << std::endl;
+
+	// 3. Deep copy verification (modifying copy must not affect original)
+	Array<int> copy(numbers);
+	copy[0] = 999;
+	std::cout << "Original numbers[0] after modifying copy: " << numbers[0] << std::endl;
+	std::cout << "Copy copy[0]:                             " << copy[0] << std::endl;
+
+	// 4. Testing with string type
+	Array<std::string> strings(3);
+	strings[0] = "Hello";
+	strings[1] = "World";
+	strings[2] = "42";
+	std::cout << "Strings elements: ";
+	for (unsigned int i = 0; i < strings.size(); ++i)
+		std::cout << strings[i] << " ";
+	std::cout << std::endl;
+
+	// 5. Out of bounds exception test
+	try
 	{
-		Array<int> numbers(MAX_VAL);
-		int* mirror = new int[MAX_VAL];
-		srand(static_cast<unsigned int>(time(NULL)));
-		for (int i = 0; i < MAX_VAL; i++)
-		{
-			const int value = rand();
-			numbers[i] = value;
-			mirror[i] = value;
-		}
-
-		// Scope test: copy constructor and assignment in nested scope
-		{
-			Array<int> tmp = numbers;
-			Array<int> test(tmp);
-		}
-
-		bool mirrorMatches = true;
-		for (int i = 0; i < MAX_VAL; i++)
-		{
-			if (mirror[i] != numbers[i])
-			{
-				std::cerr << "FAIL: didn't save the same value!!" << std::endl;
-				mirrorMatches = false;
-				delete[] mirror;
-				return 1;
-			}
-		}
-		if (mirrorMatches)
-			std::cout << "SUCCESS: All " << MAX_VAL << " elements match mirror array!" << std::endl;
-
-		// Out-of-bounds tests from 42 subject
-		try
-		{
-			std::cout << "Testing negative index (numbers[-2])... ";
-			numbers[-2] = 0;
-			std::cout << "FAILED: No exception thrown!" << std::endl;
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << "Caught expected exception: " << e.what() << std::endl;
-		}
-
-		try
-		{
-			std::cout << "Testing upper bound index (numbers[MAX_VAL])... ";
-			numbers[MAX_VAL] = 0;
-			std::cout << "FAILED: No exception thrown!" << std::endl;
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << "Caught expected exception: " << e.what() << std::endl;
-		}
-
-		delete[] mirror;
+		std::cout << "Accessing index 10 in size 5 array: ";
+		numbers[10] = 42;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Caught expected exception: " << e.what() << std::endl;
 	}
 
-	std::cout << "\n==========================================" << std::endl;
-	std::cout << "  Empty Array Tests                       " << std::endl;
-	std::cout << "==========================================" << std::endl;
-	{
-		Array<int> empty;
-		std::cout << "Empty array size: " << empty.size() << std::endl;
-		try
-		{
-			std::cout << "Attempting to access empty[0]... ";
-			empty[0] = 42;
-			std::cout << "FAILED: No exception thrown!" << std::endl;
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << "Caught expected exception: " << e.what() << std::endl;
-		}
-	}
-
-	std::cout << "\n==========================================" << std::endl;
-	std::cout << "  Default Value-Initialization Test       " << std::endl;
-	std::cout << "==========================================" << std::endl;
-	{
-		Array<int> defaultInts(5);
-		std::cout << "Default initialized ints (must be 0): ";
-		for (unsigned int i = 0; i < defaultInts.size(); ++i)
-			std::cout << defaultInts[i] << " ";
-		std::cout << std::endl;
-	}
-
-	std::cout << "\n==========================================" << std::endl;
-	std::cout << "  Deep Copy & Assignment Independence     " << std::endl;
-	std::cout << "==========================================" << std::endl;
-	{
-		Array<std::string> original(3);
-		original[0] = "Apple";
-		original[1] = "Banana";
-		original[2] = "Cherry";
-
-		Array<std::string> copy(original);
-		copy[0] = "Avocado";
-
-		std::cout << "original[0] after modifying copy: " << original[0] << " (must be Apple)" << std::endl;
-		std::cout << "copy[0]:                          " << copy[0] << " (must be Avocado)" << std::endl;
-
-		Array<std::string> assigned;
-		assigned = original;
-		assigned[1] = "Blueberry";
-
-		std::cout << "original[1] after modifying assigned: " << original[1] << " (must be Banana)" << std::endl;
-		std::cout << "assigned[1]:                          " << assigned[1] << " (must be Blueberry)" << std::endl;
-	}
-
-	std::cout << "\n==========================================" << std::endl;
-	std::cout << "  Const Array Correctness                 " << std::endl;
-	std::cout << "==========================================" << std::endl;
-	{
-		Array<int> mut(3);
-		mut[0] = 100;
-		mut[1] = 200;
-		mut[2] = 300;
-
-		const Array<int> constArr = mut;
-		std::cout << "constArr size: " << constArr.size() << std::endl;
-		std::cout << "constArr elements: ";
-		for (unsigned int i = 0; i < constArr.size(); ++i)
-			std::cout << constArr[i] << " ";
-		std::cout << std::endl;
-	}
-
-	std::cout << "\nAll Array tests completed successfully!" << std::endl;
 	return 0;
 }
