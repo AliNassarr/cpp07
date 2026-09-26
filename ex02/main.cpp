@@ -35,7 +35,11 @@ int main(void)
 		std::cout << strings[i] << " ";
 	std::cout << std::endl;
 
-	// 5. Out of bounds exception test
+	// 5. Const array reading test
+	const Array<int> constNumbers(numbers);
+	std::cout << "Const array reading index 0:  " << constNumbers[0] << std::endl;
+
+	// 6. Out of bounds exception test
 	try
 	{
 		std::cout << "Accessing index 10 in size 5 array: ";
